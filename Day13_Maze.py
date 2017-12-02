@@ -20,7 +20,11 @@ class Maze:
                 else:
                     self.maze[yp].append('#')
         
-    def printMaze(self):
+    def printMaze(self, p = []):
+        for yp in range(self.y):
+            for xp in range(self.x):
+                if p.count((xp, yp)) > 0:
+                    self.maze[yp][xp] = '0'
         for row in self.maze:
             print ''.join(row)
     
@@ -81,15 +85,20 @@ def main():
     print('Start Maze')
     
 #     c = Maze(10, 7, 10)
-    c = Maze(50, 50, 1352)
+    c = Maze(50, 42, 1352)
     c.evaluateGraph()
     c.printGraph()
     
-#     p = c.findShortestPath((1,1), (7,4))
-    p = c.findShortestPath((1,1), (31,39))
+#     p1 = c.findShortestPath((1,1), (7,4))
+#     p1 = c.findShortestPath((1,1), (31,39))
+    p1 = c.findShortestPath((1,1), (27,21))
+
+#     p2 = c.findShortestPath((1,1), (7,4))
+#     p2 = c.findAllPaths((1,1), (31,39))
+
     
-    c.printMaze()
-    print 'Shortest path is {0} steps'.format(p.__len__()-1)
+    c.printMaze(p1)
+    print 'Shortest path is {0} steps'.format(p1.__len__()-1)
  
 
 if __name__ == '__main__':
