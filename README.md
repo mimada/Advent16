@@ -1,2 +1,2 @@
 # Advent16
-Solutions for Advent
+Solutions for Advent of Code
