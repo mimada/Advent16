@@ -37,7 +37,20 @@ class PacketScanners:
                 l1['scanPos'] = 0
                 l1['sign'] = 1
         
-    def runScanner(self, steps):
+    def runScanner1(self, steps):
+        
+        for l1 in self.layers:
+            if l1.has_key('scanPos'):
+                scanPos = (l1['scanPos'] + (steps * l1['sign'])) % ((l1['range'] * 2) - 2)
+                maxValue = l1['range'] - 1
+                if scanPos > maxValue:
+                    l1['scanPos'] = maxValue - (scanPos - maxValue)
+                    l1['sign'] = -1
+                else:
+                    l1['scanPos'] = scanPos
+                    l1['sign'] = 1
+    
+    def runScanner2(self, steps):
         for i in range(steps):
             for l1 in self.layers:
                 if l1.has_key('scanPos'):
@@ -45,7 +58,7 @@ class PacketScanners:
                         l1['sign'] = 1
                     elif l1['scanPos'] == (l1['range'] - 1):
                         l1['sign'] = -1
-                        
+                         
                     l1['scanPos'] = (l1['scanPos'] + l1['sign'])
     
     def getTest1Result(self):
@@ -54,22 +67,23 @@ class PacketScanners:
             if l.has_key('scanPos'):
                 if l['scanPos'] == 0:
                     severity = severity + i * l['range']
-            self.runScanner(1)
+            self.runScanner2(1)
         return severity
     
     def getTest2Result(self):
         hit = 1
-        steps = 30000
+#         steps = 0
+        steps = 1600000
         while hit > 0:
             steps = steps + 2
             self.resetScanner()
-            self.runScanner(steps)
+            self.runScanner1(steps)
             hit = 0
             for i, l in enumerate(self.layers):
                 if l.has_key('scanPos'):
                     if l['scanPos'] == 0:
                         hit = hit + 1
-                self.runScanner(1)
+                self.runScanner2(1)
             if not (steps % 1000):
                 print steps, hit
         return steps
