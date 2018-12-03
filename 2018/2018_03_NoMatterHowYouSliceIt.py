@@ -10,9 +10,9 @@ class NoMatterHowYouSliceIt:
         grid = []
         idList = []
         # init grid
-        for i1 in range(1100):
+        for i1 in range(1000):
             grid.append([])
-            for i2 in range(1100):
+            for i2 in range(1000):
                 grid[i1].append([])
 
         with open(fileName) as fi:
@@ -26,6 +26,8 @@ class NoMatterHowYouSliceIt:
                 w = int(wh[0])
                 h = int(wh[1])
                 id = s1[0].strip('#')
+
+                # add id to list
                 idList.append(id)
 
                 # fill grid
@@ -33,10 +35,10 @@ class NoMatterHowYouSliceIt:
                     for px in range(x, x + w):
                         grid[py][px].append(id)
 
-        # Check overlap
+        # Check overlap and delete overlapping ids in idList
         overlap = 0
-        for i1 in range(1100):
-            for i2 in range(1100):
+        for i1 in range(1000):
+            for i2 in range(1000):
                 if len(grid[i1][i2]) > 1:
                     overlap = overlap + 1
                     for i in grid[i1][i2]:
@@ -44,24 +46,6 @@ class NoMatterHowYouSliceIt:
                             idList.remove(i)
 
         return overlap, idList
-
-    def getProductId(self, fileName):
-
-        lines = []
-        with open(fileName) as fi:
-            for line in fi:
-                lines.append(line.strip())
-        lines.sort()
-        for i in range(len(lines) - 1):
-            errors = []
-            for ii in range(len(lines[i])):
-                if not lines[i][ii] == lines[i+1][ii]:
-                    errors.append(ii)
-            if len(errors) == 1:
-                print lines[i], lines[i+1]
-                print lines[i][:errors[0]] + lines[i][errors[0]+1:]
-
-
 
 
 def main():
@@ -72,8 +56,5 @@ def main():
     print c.getOverlap('2018_03_Input_test_1.txt')
     print c.getOverlap('2018_03_Input.txt')
     
-#    print c.getProductId('2018_03_Input_test_2.txt')
-#    print c.getProductId('2018_03_Input.txt')
-
 if __name__ == '__main__':
     main()
